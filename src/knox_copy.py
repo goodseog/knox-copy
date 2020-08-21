@@ -1,5 +1,7 @@
+import os
 import sys
 import win32clipboard
+import logging
 
 from urllib import request
 from PIL import Image
@@ -22,11 +24,23 @@ def gen_template(image_url: str):
 
     width, height = 200, 200
     try:
-        real_width, real_height = Image.open(request.urlopen(image_url)).size
+        opener = request.build_opener()
+
+        http_proxy = os.getenv('HTTP_PROXY')
+        https_proxy = os.getenv('HTTPS_PROXY')
+        if http_proxy and https_proxy:
+            proxy_handler = request.ProxyHandler({
+                'http': http_proxy,
+                'https': https_proxy,
+            })
+            opener = request.build_opener(proxy_handler)
+
+        real_width, real_height = Image.open(opener.open(image_url)).size
         height = int(real_height * width / real_width)
         print("Orig image size : ",  (real_width, real_height))
+
     except Exception:
-        print("Cannot get image size")
+        logging.exception(Exception)
         
     template = (
         b'Version:0.9      \r\n'
@@ -75,4 +89,5 @@ def gen_template(image_url: str):
     return template
 
 if __name__ == '__main__':
+    os.getenv
     copy_clipboard(gen_template(sys.argv[1]))
