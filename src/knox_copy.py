@@ -25,7 +25,7 @@ def gen_template(image_url: str):
         real_width, real_height = Image.open(request.urlopen(image_url)).size
         height = int(real_height * width / real_width)
         print("Orig image size : ",  (real_width, real_height))
-    except:
+    except Exception:
         print("Cannot get image size")
         
     template = (
