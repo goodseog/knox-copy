@@ -25,7 +25,6 @@ def gen_template(image_url: str):
     width, height = 200, 200
     try:
         opener = request.build_opener()
-
         http_proxy = os.getenv('HTTP_PROXY')
         https_proxy = os.getenv('HTTPS_PROXY')
         if http_proxy and https_proxy:
