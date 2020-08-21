@@ -5,8 +5,8 @@ from urllib import request
 from PIL import Image
 
 def copy_clipboard(data):
-    HTML_ID = 49342
-    CSV_ID = 49955
+    HTML_ID = win32clipboard.RegisterClipboardFormat("HTML Format")
+    CSV_ID = win32clipboard.RegisterClipboardFormat("Csv")
 
     win32clipboard.OpenClipboard(0)
     win32clipboard.EmptyClipboard()
